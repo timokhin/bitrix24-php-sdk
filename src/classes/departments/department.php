@@ -29,14 +29,10 @@ class Department extends Bitrix24Entity
 	 * @throws Bitrix24Exception
 	 * @return array
 	 */
-	public function get($sort, $order, $filter)
+	public function get($sort = 'name', $order = 'asc', $filter = array())
 	{
-		$filterCode = array_keys($filter);
-		$filterCode = $filterCode[0];
-		$filterValue = array_values($filter);
-		$filterValue = $filterValue[0];
-		$arFilter = array(Main::SORT => $sort, Main::ORDER => $order, $filterCode => $filterValue);
-		$result = $this->client->call('department.get', $arFilter);
+		$arParams = array_merge(array(Main::SORT => $sort, Main::ORDER => $order), $filter);
+		$result = $this->client->call('department.get', $arParams);
 		return $result;
 	}
 
