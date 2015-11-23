@@ -1,7 +1,9 @@
 <?php
 namespace Bitrix24\User;
+
 use Bitrix24\Bitrix24Entity;
 use Bitrix24\Bitrix24Exception;
+use Bitrix24\Presets\Main;
 
 class User extends Bitrix24Entity
 {
@@ -45,23 +47,20 @@ class User extends Bitrix24Entity
 	 * Get list of users
 	 * @link http://dev.1c-bitrix.ru/rest_help/users/user_get.php
 	 * @throws Bitrix24Exception
-	 * @param $SORT - field name to sort by them
-	 * @param $ORDER - sort direction? must be set to ASC or DESC
-	 * @param $FILTER - list of fields user entity to filter result
+	 * @param $sort - field name to sort by them
+	 * @param $order - sort direction? must be set to ASC or DESC
+	 * @param $filter - list of fields user entity to filter result
 	 * @return array
 	 */
-	public function get($SORT, $ORDER, $FILTER)
+	public function get($sort = 'ID', $order = 'asc', $filter = array())
 	{
-		$result = $this->client->call('user.get',
-			array(
-				'SORT' => $SORT,
-				'ORDER' => $ORDER,
-				'FILTER'=> $FILTER)
-		);
+		$arParams = array_merge(array(Main::SORT => $sort, Main::ORDER => $order), $filter);
+
+		$result = $this->client->call('user.get', $arParams);
 		return $result;
 	}
-	
-		
+
+
 	/**
 	 * Check if current user has any of access rights specified by $access param
 	 * @link http://dev.1c-bitrix.ru/rest_help/general/user_access.php
